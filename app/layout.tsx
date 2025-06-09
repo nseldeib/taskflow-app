@@ -6,9 +6,9 @@ import { ThemeProvider } from "@/components/theme-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "TaskMaster - Project & Task Management",
-  description: "Manage your projects and tasks efficiently",
-    generator: 'v0.dev'
+  title: "TaskFlow - Project & Task Management",
+  description: "Manage your projects and tasks efficiently with TaskFlow",
+  generator: "v0.dev",
 }
 
 export default function RootLayout({

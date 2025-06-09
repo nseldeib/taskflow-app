@@ -54,8 +54,8 @@ export default function SignUp() {
           <div className="flex justify-center mb-2">
             <Sparkles className="h-8 w-8 text-purple-500" />
           </div>
-          <CardTitle className="text-2xl">Create an account</CardTitle>
-          <CardDescription>Enter your email and password to create your TaskMaster account</CardDescription>
+          <CardTitle className="text-2xl">Create your TaskFlow account</CardTitle>
+          <CardDescription>Enter your email and password to create your TaskFlow account</CardDescription>
         </CardHeader>
         <form onSubmit={handleSignUp}>
           <CardContent className="space-y-4">

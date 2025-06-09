@@ -47,7 +47,7 @@ export function Sidebar() {
         </Button>
         <div className="flex items-center gap-2 ml-4">
           <Sparkles className="h-6 w-6 text-purple-500" />
-          <h1 className="text-xl font-bold">TaskMaster</h1>
+          <h1 className="text-xl font-bold">TaskFlow</h1>
         </div>
       </div>
 
@@ -58,7 +58,7 @@ export function Sidebar() {
           <div className="px-3 py-2 hidden lg:block">
             <div className="flex items-center gap-2 px-2">
               <Sparkles className="h-6 w-6 text-purple-500" />
-              <h1 className="text-xl font-bold">TaskMaster</h1>
+              <h1 className="text-xl font-bold">TaskFlow</h1>
             </div>
           </div>
           <div className="px-3 py-2">

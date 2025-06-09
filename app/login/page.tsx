@@ -51,7 +51,7 @@ export default function Login() {
           <div className="flex justify-center mb-2">
             <Sparkles className="h-8 w-8 text-purple-500" />
           </div>
-          <CardTitle className="text-2xl">Welcome back</CardTitle>
+          <CardTitle className="text-2xl">Welcome back to TaskFlow</CardTitle>
           <CardDescription>Enter your email and password to access your account</CardDescription>
         </CardHeader>
         <form onSubmit={handleLogin}>

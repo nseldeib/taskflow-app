@@ -9,7 +9,7 @@ export default function Home() {
         <header className="flex justify-between items-center py-6">
           <div className="flex items-center gap-2">
             <Sparkles className="h-6 w-6 text-purple-500" />
-            <h1 className="text-2xl font-bold">TaskMaster</h1>
+            <h1 className="text-2xl font-bold">TaskFlow</h1>
           </div>
           <div className="flex gap-4">
             <Button variant="ghost" asChild>
@@ -27,7 +27,8 @@ export default function Home() {
               Organize your work and life
             </h1>
             <p className="mt-6 text-xl text-muted-foreground">
-              TaskMaster helps you manage projects, track tasks, and stay on top of your priorities.
+              TaskFlow helps you manage projects, track tasks, and stay on top of your priorities with seamless workflow
+              management.
             </p>
             <div className="mt-10">
               <Button

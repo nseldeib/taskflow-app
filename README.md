@@ -1,4 +1,4 @@
-# Todo app spec
+# TaskFlow - Todo App
 
 *Automatically synced with your [v0.dev](https://v0.dev) deployments*
 
@@ -6,6 +6,17 @@
 [![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/dENp6eztngg)
 
 ## Overview
+
+TaskFlow is a comprehensive project and task management application that helps you organize your work and life efficiently. Built with Next.js, Supabase, and modern web technologies.
+
+### Features
+
+- **Project Management**: Create and organize projects to keep your work structured
+- **Task Tracking**: Track important and planned tasks with priorities and categories
+- **Custom Categories**: Add emojis to categories and organize your tasks your way
+- **Dark Theme**: Beautiful dark theme with blues and purples
+- **Authentication**: Secure sign up and login with Supabase
+- **Responsive Design**: Works seamlessly on desktop and mobile
 
 This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
 Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
