@@ -4,7 +4,19 @@ import { UserNav } from "@/components/user-nav"
 import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
-import { initializeDefaultProjects } from "@/utils/default-projects"
+
+// Move the initialization to a client component to avoid blocking the layout
+async function initializeUserData(userId: string) {
+  // This will be called on the client side to avoid blocking server rendering
+  if (typeof window !== "undefined") {
+    const { initializeDefaultProjects } = await import("@/utils/default-projects")
+    try {
+      await initializeDefaultProjects(userId)
+    } catch (error) {
+      console.error("Error initializing default projects:", error)
+    }
+  }
+}
 
 export default async function DashboardLayout({
   children,
@@ -20,13 +32,6 @@ export default async function DashboardLayout({
 
   if (!session) {
     redirect("/login")
-  }
-
-  // Initialize default projects for new users
-  try {
-    await initializeDefaultProjects(session.user.id)
-  } catch (error) {
-    console.error("Error initializing default projects:", error)
   }
 
   return (

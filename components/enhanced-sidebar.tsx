@@ -22,7 +22,7 @@ import {
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import { createClient } from "@/utils/supabase/client"
-import { defaultProjectIcons } from "@/utils/default-projects"
+import { defaultProjectIcons, initializeDefaultProjects } from "@/utils/default-projects"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 
 interface Project {
@@ -36,13 +36,24 @@ export function EnhancedSidebar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [isProjectsOpen, setIsProjectsOpen] = useState(true)
   const [projects, setProjects] = useState<Project[]>([])
+  const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchProjectsAndInitialize = async () => {
       const supabase = createClient()
       const {
         data: { user },
       } = await supabase.auth.getUser()
+
+      if (user && !isInitialized) {
+        // Initialize default projects for new users
+        try {
+          await initializeDefaultProjects(user.id)
+          setIsInitialized(true)
+        } catch (error) {
+          console.error("Error initializing default projects:", error)
+        }
+      }
 
       if (user) {
         const { data: projectsData } = await supabase
@@ -57,8 +68,8 @@ export function EnhancedSidebar() {
       }
     }
 
-    fetchProjects()
-  }, [])
+    fetchProjectsAndInitialize()
+  }, [isInitialized])
 
   const taskRoutes = [
     {

@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -17,16 +17,35 @@ export default function SignUp() {
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [message, setMessage] = useState<string | null>(null)
   const router = useRouter()
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const checkUser = async () => {
+      const supabase = createClient()
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+
+      if (session) {
+        router.push("/dashboard")
+        return
+      }
+    }
+
+    checkUser()
+  }, [router])
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
+    setMessage(null)
 
     try {
       const supabase = createClient()
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -36,8 +55,16 @@ export default function SignUp() {
 
       if (error) {
         setError(error.message)
-      } else {
+        return
+      }
+
+      if (data.session) {
+        // User is immediately signed in
         router.push("/dashboard")
+        router.refresh()
+      } else if (data.user && !data.session) {
+        // Email confirmation required
+        setMessage("Please check your email for a confirmation link.")
       }
     } catch (err) {
       setError("An unexpected error occurred")
@@ -60,6 +87,7 @@ export default function SignUp() {
         <form onSubmit={handleSignUp}>
           <CardContent className="space-y-4">
             {error && <div className="p-3 bg-destructive/15 text-destructive text-sm rounded-md">{error}</div>}
+            {message && <div className="p-3 bg-green-500/15 text-green-600 text-sm rounded-md">{message}</div>}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -69,6 +97,7 @@ export default function SignUp() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                disabled={loading}
               />
             </div>
             <div className="space-y-2">
@@ -81,6 +110,7 @@ export default function SignUp() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
+                disabled={loading}
               />
             </div>
           </CardContent>
