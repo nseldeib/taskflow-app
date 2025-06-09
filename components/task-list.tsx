@@ -7,15 +7,17 @@ import { createClient } from "@/utils/supabase/client"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { toast } from "@/hooks/use-toast"
-import { MoreHorizontal, Calendar } from "lucide-react"
+import { MoreHorizontal, Calendar, Star } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { format } from "date-fns"
+import { cn } from "@/lib/utils"
 
 interface Task {
   id: string
   title: string
   description?: string
   completed: boolean
+  starred?: boolean
   due_date?: string
   priority?: string
   user_id: string
@@ -62,6 +64,29 @@ export function TaskList({ tasks }: TaskListProps) {
       const supabase = createClient()
 
       const { error } = await supabase.from("todos").update({ completed: !task.completed }).eq("id", task.id)
+
+      if (error) throw error
+
+      router.refresh()
+    } catch (error) {
+      console.error(error)
+      toast({
+        title: "Error",
+        description: "Failed to update task. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setLoading((prev) => ({ ...prev, [task.id]: false }))
+    }
+  }
+
+  const toggleTaskStar = async (task: Task) => {
+    setLoading((prev) => ({ ...prev, [task.id]: true }))
+
+    try {
+      const supabase = createClient()
+
+      const { error } = await supabase.from("todos").update({ starred: !task.starred }).eq("id", task.id)
 
       if (error) throw error
 
@@ -136,6 +161,20 @@ export function TaskList({ tasks }: TaskListProps) {
               disabled={loading[task.id]}
               className="h-5 w-5"
             />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6 p-0"
+              onClick={() => toggleTaskStar(task)}
+              disabled={loading[task.id]}
+            >
+              <Star
+                className={cn(
+                  "h-4 w-4",
+                  task.starred ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground hover:text-yellow-400",
+                )}
+              />
+            </Button>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <span className="text-xl">📝</span>
@@ -174,6 +213,9 @@ export function TaskList({ tasks }: TaskListProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => toggleTaskStar(task)}>
+                {task.starred ? "Unstar" : "Star"} Task
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => deleteTask(task.id)}>Delete Task</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

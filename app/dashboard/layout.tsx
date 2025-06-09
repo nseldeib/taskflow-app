@@ -1,9 +1,10 @@
 import type React from "react"
-import { Sidebar } from "@/components/sidebar"
+import { EnhancedSidebar } from "@/components/enhanced-sidebar"
 import { UserNav } from "@/components/user-nav"
 import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+import { initializeDefaultProjects } from "@/utils/default-projects"
 
 export default async function DashboardLayout({
   children,
@@ -21,9 +22,16 @@ export default async function DashboardLayout({
     redirect("/login")
   }
 
+  // Initialize default projects for new users
+  try {
+    await initializeDefaultProjects(session.user.id)
+  } catch (error) {
+    console.error("Error initializing default projects:", error)
+  }
+
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
+      <EnhancedSidebar />
       <div className="flex-1">
         <header className="border-b bg-background">
           <div className="flex h-16 items-center px-4 sm:px-6">

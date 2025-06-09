@@ -87,6 +87,7 @@ export default function NewProjectTask({ params }: { params: { id: string } }) {
         priority,
         due_date: dueDate ? dueDate.toISOString() : null,
         completed: false,
+        starred: false,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       }
