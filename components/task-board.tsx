@@ -17,17 +17,10 @@ interface Task {
   id: string
   title: string
   description?: string
-  is_completed: boolean
+  completed: boolean
   due_date?: string
-  emoji?: string
+  priority?: string
   project_id: string
-  task_priorities: {
-    name: string
-    color: string
-  }
-  task_statuses: {
-    name: string
-  }
 }
 
 interface TaskBoardProps {
@@ -45,7 +38,7 @@ export function TaskBoard({ tasks, projectId }: TaskBoardProps) {
     try {
       const supabase = createClient()
 
-      const { error } = await supabase.from("tasks").update({ is_completed: !task.is_completed }).eq("id", task.id)
+      const { error } = await supabase.from("todos").update({ completed: !task.completed }).eq("id", task.id)
 
       if (error) throw error
 
@@ -66,7 +59,7 @@ export function TaskBoard({ tasks, projectId }: TaskBoardProps) {
     try {
       const supabase = createClient()
 
-      const { error } = await supabase.from("tasks").delete().eq("id", taskId)
+      const { error } = await supabase.from("todos").delete().eq("id", taskId)
 
       if (error) throw error
 
@@ -86,11 +79,45 @@ export function TaskBoard({ tasks, projectId }: TaskBoardProps) {
     }
   }
 
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case "urgent":
+        return "#ef4444"
+      case "high":
+        return "#f97316"
+      case "medium":
+        return "#eab308"
+      case "low":
+        return "#22c55e"
+      default:
+        return "#6b7280"
+    }
+  }
+
   const statusColumns = [
-    { name: "Planned", tasks: tasks.filter((t) => t.task_statuses.name === "Planned" && !t.is_completed) },
-    { name: "Important", tasks: tasks.filter((t) => t.task_statuses.name === "Important" && !t.is_completed) },
-    { name: "In Progress", tasks: tasks.filter((t) => t.task_statuses.name === "In Progress" && !t.is_completed) },
-    { name: "Completed", tasks: tasks.filter((t) => t.is_completed) },
+    {
+      name: "Planned",
+      tasks: tasks.filter((t) => (t.priority === "low" || t.priority === "medium") && !t.completed),
+    },
+    {
+      name: "Important",
+      tasks: tasks.filter((t) => (t.priority === "high" || t.priority === "urgent") && !t.completed),
+    },
+    {
+      name: "In Progress",
+      tasks: tasks.filter(
+        (t) =>
+          !t.completed &&
+          t.priority !== "low" &&
+          t.priority !== "medium" &&
+          t.priority !== "high" &&
+          t.priority !== "urgent",
+      ),
+    },
+    {
+      name: "Completed",
+      tasks: tasks.filter((t) => t.completed),
+    },
   ]
 
   return (
@@ -114,15 +141,15 @@ export function TaskBoard({ tasks, projectId }: TaskBoardProps) {
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2 flex-1">
                       <Checkbox
-                        checked={task.is_completed}
+                        checked={task.completed}
                         onCheckedChange={() => toggleTaskCompletion(task)}
                         disabled={loading[task.id]}
                         className="h-4 w-4"
                       />
                       <div className="flex items-center gap-1">
-                        <span className="text-sm">{task.emoji || "📝"}</span>
+                        <span className="text-sm">📝</span>
                         <span
-                          className={`text-sm font-medium ${task.is_completed ? "line-through text-muted-foreground" : ""}`}
+                          className={`text-sm font-medium ${task.completed ? "line-through text-muted-foreground" : ""}`}
                         >
                           {task.title}
                         </span>
@@ -143,17 +170,19 @@ export function TaskBoard({ tasks, projectId }: TaskBoardProps) {
                   {task.description && <p className="text-xs text-muted-foreground line-clamp-2">{task.description}</p>}
 
                   <div className="flex flex-wrap gap-1">
-                    <Badge
-                      className="text-xs"
-                      style={{
-                        backgroundColor: `${task.task_priorities.color}20`,
-                        color: task.task_priorities.color,
-                        borderColor: `${task.task_priorities.color}40`,
-                      }}
-                      variant="outline"
-                    >
-                      {task.task_priorities.name}
-                    </Badge>
+                    {task.priority && (
+                      <Badge
+                        className="text-xs"
+                        style={{
+                          backgroundColor: `${getPriorityColor(task.priority)}20`,
+                          color: getPriorityColor(task.priority),
+                          borderColor: `${getPriorityColor(task.priority)}40`,
+                        }}
+                        variant="outline"
+                      >
+                        {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+                      </Badge>
+                    )}
                     {task.due_date && (
                       <div className="flex items-center text-xs text-muted-foreground">
                         <Calendar className="h-3 w-3 mr-1" />

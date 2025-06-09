@@ -10,18 +10,19 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { createClient } from "@/utils/supabase/client"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "@/hooks/use-toast"
 import { DatePicker } from "@/components/date-picker"
 import { EmojiPicker } from "@/components/emoji-picker"
 
-export default function NewTask({ params }: { params: { id: string } }) {
+export default function NewProjectTask({ params }: { params: { id: string } }) {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [priority, setPriority] = useState("medium")
   const [dueDate, setDueDate] = useState<Date | undefined>(undefined)
   const [emoji, setEmoji] = useState("📝")
   const [loading, setLoading] = useState(false)
+  const [projectTitle, setProjectTitle] = useState("")
   const router = useRouter()
 
   const priorities = [
@@ -31,6 +32,34 @@ export default function NewTask({ params }: { params: { id: string } }) {
     { id: "urgent", name: "Urgent" },
   ]
 
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        const supabase = createClient()
+        const { data: project, error } = await supabase.from("events").select("title").eq("id", params.id).single()
+
+        if (error) {
+          console.error("Error fetching project:", error.message)
+          toast({
+            title: "Error",
+            description: "Project not found.",
+            variant: "destructive",
+          })
+          router.push("/dashboard/projects")
+          return
+        }
+
+        if (project) {
+          setProjectTitle(project.title)
+        }
+      } catch (err) {
+        console.error("Error in fetchProject:", err)
+      }
+    }
+
+    fetchProject()
+  }, [params.id, router])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -39,38 +68,57 @@ export default function NewTask({ params }: { params: { id: string } }) {
       const supabase = createClient()
       const {
         data: { user },
+        error: userError,
       } = await supabase.auth.getUser()
+
+      if (userError) {
+        throw new Error(`Authentication error: ${userError.message}`)
+      }
 
       if (!user) {
         throw new Error("User not authenticated")
       }
 
-      const { error } = await supabase.from("todos").insert({
+      const taskData = {
         title,
-        description,
+        description: description || null,
         event_id: params.id,
         user_id: user.id,
         priority,
-        due_date: dueDate,
+        due_date: dueDate ? dueDate.toISOString() : null,
         completed: false,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-      })
+      }
 
-      if (error) throw error
+      const { data, error } = await supabase.from("todos").insert(taskData).select()
+
+      if (error) {
+        console.error("Supabase error:", error)
+        throw new Error(`Database error: ${error.message}`)
+      }
 
       toast({
         title: "Task created",
-        description: "Your new task has been created successfully.",
+        description: "Your new task has been added to the project.",
       })
 
       router.push(`/dashboard/projects/${params.id}`)
       router.refresh()
     } catch (error) {
-      console.error(error)
+      console.error("Error creating task:", error)
+
+      let errorMessage = "Failed to create task. Please try again."
+
+      if (error instanceof Error) {
+        errorMessage = error.message
+      } else if (typeof error === "string") {
+        errorMessage = error
+      }
+
       toast({
         title: "Error",
-        description: "Failed to create task. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       })
     } finally {
@@ -80,7 +128,10 @@ export default function NewTask({ params }: { params: { id: string } }) {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold tracking-tight mb-6">Create New Task</h1>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold tracking-tight">Add Task to {projectTitle}</h1>
+        <p className="text-muted-foreground">Create a new task for this project.</p>
+      </div>
 
       <Card>
         <form onSubmit={handleSubmit}>
@@ -137,7 +188,7 @@ export default function NewTask({ params }: { params: { id: string } }) {
               Cancel
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading ? "Creating..." : "Create Task"}
+              {loading ? "Creating..." : "Add Task"}
             </Button>
           </CardFooter>
         </form>
