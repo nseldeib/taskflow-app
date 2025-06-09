@@ -15,9 +15,9 @@ export default async function Projects() {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Fetch projects
+  // Fetch projects from events table
   const { data: projects } = await supabase
-    .from("projects")
+    .from("events")
     .select("*")
     .eq("user_id", user?.id)
     .order("created_at", { ascending: false })

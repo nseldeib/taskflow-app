@@ -6,6 +6,7 @@ import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
 import { Plus, Search } from "lucide-react"
 import { TaskList } from "@/components/task-list"
+import Link from "next/link"
 
 export default async function Tasks() {
   const cookieStore = cookies()
@@ -15,22 +16,18 @@ export default async function Tasks() {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Fetch all tasks
+  // Fetch all tasks from todos table
   const { data: allTasks } = await supabase
-    .from("tasks")
-    .select(`
-      *,
-      projects(name),
-      task_priorities(name, color),
-      task_statuses(name)
-    `)
-    .eq("projects.user_id", user?.id)
+    .from("todos")
+    .select("*")
+    .eq("user_id", user?.id)
     .order("created_at", { ascending: false })
 
-  // Filter tasks by status
-  const importantTasks = allTasks?.filter((task) => task.task_statuses.name === "Important") || []
-  const plannedTasks = allTasks?.filter((task) => task.task_statuses.name === "Planned") || []
-  const completedTasks = allTasks?.filter((task) => task.is_completed) || []
+  // Filter tasks by priority and completion status
+  const importantTasks = allTasks?.filter((task) => task.priority === "high" || task.priority === "urgent") || []
+  const plannedTasks =
+    allTasks?.filter((task) => !task.completed && (task.priority === "low" || task.priority === "medium")) || []
+  const completedTasks = allTasks?.filter((task) => task.completed) || []
 
   return (
     <div className="space-y-6">
@@ -41,8 +38,10 @@ export default async function Tasks() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input type="search" placeholder="Search tasks..." className="w-full sm:w-[200px] pl-8" />
           </div>
-          <Button>
-            <Plus className="mr-2 h-4 w-4" /> New Task
+          <Button asChild>
+            <Link href="/dashboard/tasks/new">
+              <Plus className="mr-2 h-4 w-4" /> New Task
+            </Link>
           </Button>
         </div>
       </div>

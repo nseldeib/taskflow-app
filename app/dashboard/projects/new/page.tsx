@@ -13,7 +13,7 @@ import { useState } from "react"
 import { toast } from "@/hooks/use-toast"
 
 export default function NewProject() {
-  const [name, setName] = useState("")
+  const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -32,10 +32,14 @@ export default function NewProject() {
         throw new Error("User not authenticated")
       }
 
-      const { error } = await supabase.from("projects").insert({
-        name,
+      const { error } = await supabase.from("events").insert({
+        title,
         description,
         user_id: user.id,
+        start_time: new Date().toISOString(),
+        end_time: new Date().toISOString(),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       })
 
       if (error) throw error
@@ -71,12 +75,12 @@ export default function NewProject() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Project Name</Label>
+              <Label htmlFor="title">Project Name</Label>
               <Input
-                id="name"
+                id="title"
                 placeholder="Enter project name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 required
               />
             </div>

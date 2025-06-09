@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/utils/supabase/client"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { toast } from "@/hooks/use-toast"
 import { MoreHorizontal, Calendar } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -22,10 +22,6 @@ interface Task {
   event_id?: string
   created_at: string
   updated_at: string
-  emoji?: string
-  projects?: { name: string }
-  task_priorities?: { name: string; color: string }
-  task_statuses?: { name: string }
 }
 
 interface TaskListProps {
@@ -34,7 +30,30 @@ interface TaskListProps {
 
 export function TaskList({ tasks }: TaskListProps) {
   const [loading, setLoading] = useState<Record<string, boolean>>({})
+  const [projectNames, setProjectNames] = useState<Record<string, string>>({})
   const router = useRouter()
+
+  // Fetch project names for tasks that have event_id
+  useEffect(() => {
+    const fetchProjectNames = async () => {
+      const supabase = createClient()
+      const eventIds = tasks.filter((task) => task.event_id).map((task) => task.event_id!)
+
+      if (eventIds.length > 0) {
+        const { data: projects } = await supabase.from("events").select("id, title").in("id", eventIds)
+
+        if (projects) {
+          const nameMap: Record<string, string> = {}
+          projects.forEach((project) => {
+            nameMap[project.id] = project.title
+          })
+          setProjectNames(nameMap)
+        }
+      }
+    }
+
+    fetchProjectNames()
+  }, [tasks])
 
   const toggleTaskCompletion = async (task: Task) => {
     setLoading((prev) => ({ ...prev, [task.id]: true }))
@@ -83,6 +102,21 @@ export function TaskList({ tasks }: TaskListProps) {
     }
   }
 
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case "urgent":
+        return "bg-red-500/20 text-red-500 border-red-500/40"
+      case "high":
+        return "bg-orange-500/20 text-orange-500 border-orange-500/40"
+      case "medium":
+        return "bg-yellow-500/20 text-yellow-500 border-yellow-500/40"
+      case "low":
+        return "bg-green-500/20 text-green-500 border-green-500/40"
+      default:
+        return "bg-gray-500/20 text-gray-500 border-gray-500/40"
+    }
+  }
+
   if (tasks.length === 0) {
     return (
       <div className="p-6 text-center">
@@ -104,7 +138,7 @@ export function TaskList({ tasks }: TaskListProps) {
             />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <span className="text-xl">{task.emoji || "📝"}</span>
+                <span className="text-xl">📝</span>
                 <span className={`font-medium ${task.completed ? "line-through text-muted-foreground" : ""}`}>
                   {task.title}
                 </span>
@@ -113,32 +147,14 @@ export function TaskList({ tasks }: TaskListProps) {
                 <p className="text-sm text-muted-foreground line-clamp-1 mt-1">{task.description}</p>
               )}
               <div className="flex flex-wrap items-center gap-2 mt-2">
-                {task.projects && (
+                {task.event_id && projectNames[task.event_id] && (
                   <Badge variant="outline" className="text-xs">
-                    {task.projects.name}
+                    {projectNames[task.event_id]}
                   </Badge>
                 )}
                 {task.priority && (
-                  <Badge variant="outline" className="text-xs">
-                    {task.priority}
-                  </Badge>
-                )}
-                {task.task_priorities && (
-                  <Badge
-                    className="text-xs"
-                    style={{
-                      backgroundColor: `${task.task_priorities.color}20`,
-                      color: task.task_priorities.color,
-                      borderColor: `${task.task_priorities.color}40`,
-                    }}
-                    variant="outline"
-                  >
-                    {task.task_priorities.name}
-                  </Badge>
-                )}
-                {task.task_statuses && (
-                  <Badge variant="secondary" className="text-xs">
-                    {task.task_statuses.name}
+                  <Badge className={`text-xs ${getPriorityColor(task.priority)}`} variant="outline">
+                    {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
                   </Badge>
                 )}
                 {task.due_date && (
@@ -158,8 +174,6 @@ export function TaskList({ tasks }: TaskListProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => router.push(`/tasks/${task.id}`)}>View Task</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.push(`/tasks/${task.id}/edit`)}>Edit Task</DropdownMenuItem>
               <DropdownMenuItem onClick={() => deleteTask(task.id)}>Delete Task</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

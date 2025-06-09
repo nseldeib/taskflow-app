@@ -10,17 +10,19 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { createClient } from "@/utils/supabase/client"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "@/hooks/use-toast"
 import { DatePicker } from "@/components/date-picker"
 import { EmojiPicker } from "@/components/emoji-picker"
 
-export default function NewTask({ params }: { params: { id: string } }) {
+export default function NewTask() {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [priority, setPriority] = useState("medium")
   const [dueDate, setDueDate] = useState<Date | undefined>(undefined)
   const [emoji, setEmoji] = useState("📝")
+  const [selectedProject, setSelectedProject] = useState("")
+  const [projects, setProjects] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
@@ -31,6 +33,38 @@ export default function NewTask({ params }: { params: { id: string } }) {
     { id: "urgent", name: "Urgent" },
   ]
 
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const supabase = createClient()
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
+
+        if (user) {
+          const { data: projectsData, error } = await supabase
+            .from("events")
+            .select("id, title")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false })
+
+          if (error) {
+            console.error("Error fetching projects:", error.message)
+            return
+          }
+
+          if (projectsData) {
+            setProjects(projectsData)
+          }
+        }
+      } catch (err) {
+        console.error("Error in fetchProjects:", err)
+      }
+    }
+
+    fetchProjects()
+  }, [])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -39,38 +73,62 @@ export default function NewTask({ params }: { params: { id: string } }) {
       const supabase = createClient()
       const {
         data: { user },
+        error: userError,
       } = await supabase.auth.getUser()
+
+      if (userError) {
+        throw new Error(`Authentication error: ${userError.message}`)
+      }
 
       if (!user) {
         throw new Error("User not authenticated")
       }
 
-      const { error } = await supabase.from("todos").insert({
+      // Prepare the task data
+      const taskData = {
         title,
-        description,
-        event_id: params.id,
+        description: description || null,
+        event_id: selectedProject && selectedProject !== "none" ? selectedProject : null,
         user_id: user.id,
         priority,
-        due_date: dueDate,
+        due_date: dueDate ? dueDate.toISOString() : null,
         completed: false,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-      })
+      }
 
-      if (error) throw error
+      console.log("Inserting task data:", taskData)
+
+      const { data, error } = await supabase.from("todos").insert(taskData).select()
+
+      if (error) {
+        console.error("Supabase error:", error)
+        throw new Error(`Database error: ${error.message}`)
+      }
+
+      console.log("Task created successfully:", data)
 
       toast({
         title: "Task created",
         description: "Your new task has been created successfully.",
       })
 
-      router.push(`/dashboard/projects/${params.id}`)
+      router.push("/dashboard/tasks")
       router.refresh()
     } catch (error) {
-      console.error(error)
+      console.error("Error creating task:", error)
+
+      let errorMessage = "Failed to create task. Please try again."
+
+      if (error instanceof Error) {
+        errorMessage = error.message
+      } else if (typeof error === "string") {
+        errorMessage = error
+      }
+
       toast({
         title: "Error",
-        description: "Failed to create task. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       })
     } finally {
@@ -112,20 +170,38 @@ export default function NewTask({ params }: { params: { id: string } }) {
                 rows={3}
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="priority">Priority</Label>
-              <Select value={priority} onValueChange={setPriority}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select priority" />
-                </SelectTrigger>
-                <SelectContent>
-                  {priorities.map((p) => (
-                    <SelectItem key={p.id} value={p.id}>
-                      {p.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="priority">Priority</Label>
+                <Select value={priority} onValueChange={setPriority}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select priority" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {priorities.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>
+                        {p.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="project">Project (Optional)</Label>
+                <Select value={selectedProject} onValueChange={setSelectedProject}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select project" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">No Project</SelectItem>
+                    {projects.map((project) => (
+                      <SelectItem key={project.id} value={project.id}>
+                        {project.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             <div className="space-y-2">
               <Label>Due Date</Label>

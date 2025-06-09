@@ -7,7 +7,7 @@ import Link from "next/link"
 interface ProjectCardProps {
   project: {
     id: string
-    name: string
+    title: string
     description?: string
     created_at: string
   }
@@ -23,7 +23,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <div className="h-8 w-8 rounded-full bg-purple-500/10 flex items-center justify-center">
             <FolderKanban className="h-4 w-4 text-purple-500" />
           </div>
-          <CardTitle className="text-lg">{project.name}</CardTitle>
+          <CardTitle className="text-lg">{project.title}</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="pb-2">
