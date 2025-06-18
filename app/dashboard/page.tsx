@@ -7,6 +7,9 @@ import { cookies } from "next/headers"
 import { Plus, CheckCircle2, Clock, AlertCircle } from "lucide-react"
 import Link from "next/link"
 import { TaskList } from "@/components/task-list"
+import { DailyRecapModal } from "@/components/daily-recap/daily-recap-modal"
+import { useState, useEffect } from "react"
+import { useRecapTimer } from "@/hooks/use-recap-timer"
 
 export default async function Dashboard() {
   const cookieStore = cookies()
@@ -128,6 +131,41 @@ export default async function Dashboard() {
           </Card>
         </TabsContent>
       </Tabs>
+      {/* Daily Recap Integration - will be moved to layout later */}
+      <DailyRecapIntegration />
     </div>
+  )
+}
+;("use client")
+
+function DailyRecapIntegration() {
+  const { shouldShowRecap, dismissRecap, showRecapManually } = useRecapTimer()
+  const [isOpen, setIsOpen] = useState(shouldShowRecap)
+
+  useEffect(() => {
+    setIsOpen(shouldShowRecap)
+  }, [shouldShowRecap])
+
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open)
+    if (!open) {
+      dismissRecap()
+    }
+  }
+
+  return (
+    <>
+      <DailyRecapModal open={isOpen} onOpenChange={handleOpenChange} />
+      {/* Manual trigger button for testing */}
+      <div className="fixed bottom-4 right-4">
+        <Button
+          onClick={showRecapManually}
+          className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+          size="sm"
+        >
+          📝 Daily Recap
+        </Button>
+      </div>
+    </>
   )
 }
