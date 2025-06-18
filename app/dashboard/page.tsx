@@ -32,9 +32,12 @@ export default async function Dashboard() {
     .limit(5)
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+    <div className="space-y-8">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+          <p className="text-muted-foreground mt-1">Welcome back! Here's what's happening with your projects.</p>
+        </div>
         <Button asChild>
           <Link href="/dashboard/projects/new">
             <Plus className="mr-2 h-4 w-4" /> New Project
@@ -42,7 +45,7 @@ export default async function Dashboard() {
         </Button>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
@@ -85,14 +88,14 @@ export default async function Dashboard() {
         </Card>
       </div>
 
-      <Tabs defaultValue="projects" className="space-y-4">
+      <Tabs defaultValue="projects" className="space-y-6">
         <TabsList>
           <TabsTrigger value="projects">Recent Projects</TabsTrigger>
           <TabsTrigger value="tasks">Recent Tasks</TabsTrigger>
         </TabsList>
-        <TabsContent value="projects" className="space-y-4">
+        <TabsContent value="projects" className="space-y-6">
           {projects && projects.length > 0 ? (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {projects.slice(0, 6).map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
@@ -113,8 +116,16 @@ export default async function Dashboard() {
             </Card>
           )}
         </TabsContent>
-        <TabsContent value="tasks" className="space-y-4">
-          <TaskList tasks={tasks || []} />
+        <TabsContent value="tasks" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Tasks</CardTitle>
+              <CardDescription>Your latest tasks across all projects</CardDescription>
+            </CardHeader>
+            <CardContent className="p-0">
+              <TaskList tasks={tasks || []} />
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
