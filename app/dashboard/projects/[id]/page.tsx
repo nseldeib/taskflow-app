@@ -38,7 +38,8 @@ export default async function ProjectDetail({ params }: { params: { id: string }
       >
         <Button asChild variant="outline">
           <Link href={`/dashboard/projects/${params.id}/settings`}>
-            <Settings className="mr-2 h-4 w-4" /> Settings
+            <Settings className="h-4 w-4 mr-2" />
+            Settings
           </Link>
         </Button>
       </PageHeader>

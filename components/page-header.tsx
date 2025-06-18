@@ -5,7 +5,7 @@ import type React from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { NewTaskButton } from "@/components/new-task-button"
-import { Search, Filter, SortAsc } from "lucide-react"
+import { Search, Filter, SortAsc, Plus } from "lucide-react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -28,23 +28,7 @@ export function PageHeader({
   children,
 }: PageHeaderProps) {
   const pathname = usePathname()
-
-  const getNewButtonText = () => {
-    if (pathname.includes("/projects/") && !pathname.includes("/tasks")) {
-      return "New Project"
-    }
-    return "New Task"
-  }
-
-  const getNewButtonHref = () => {
-    if (pathname.includes("/projects/") && !pathname.includes("/tasks")) {
-      return "/dashboard/projects/new"
-    }
-    if (projectId) {
-      return `/dashboard/projects/${projectId}/tasks/new`
-    }
-    return "/dashboard/tasks/new"
-  }
+  const isProjectsPage = pathname === "/dashboard/projects"
 
   return (
     <div className="space-y-4">
@@ -57,14 +41,14 @@ export function PageHeader({
         {/* Desktop Actions */}
         <div className="hidden sm:flex items-center gap-2">
           {children}
-          {pathname.includes("/projects/") && !pathname.includes("/tasks") ? (
+          {isProjectsPage ? (
             <Button
               asChild
               className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
             >
-              <Link href={getNewButtonHref()}>
-                <span className="mr-2">+</span>
-                {getNewButtonText()}
+              <Link href="/dashboard/projects/new">
+                <Plus className="h-4 w-4 mr-2" />
+                New Project
               </Link>
             </Button>
           ) : (
@@ -80,7 +64,16 @@ export function PageHeader({
               <Input type="search" placeholder="Search..." className="pl-8" />
             </div>
           )}
-          <NewTaskButton projectId={projectId} size="sm" showText={false} className="shrink-0" />
+          {isProjectsPage ? (
+            <Button asChild size="sm" className="shrink-0 bg-gradient-to-r from-purple-500 to-blue-500">
+              <Link href="/dashboard/projects/new">
+                <Plus className="h-4 w-4" />
+                <span className="sr-only">New Project</span>
+              </Link>
+            </Button>
+          ) : (
+            <NewTaskButton projectId={projectId} size="sm" showText={false} className="shrink-0" />
+          )}
         </div>
       </div>
 
@@ -131,7 +124,7 @@ export function PageHeader({
       )}
 
       {/* Floating Action Button for Mobile */}
-      <NewTaskButton variant="floating" projectId={projectId} />
+      {!isProjectsPage && <NewTaskButton variant="floating" projectId={projectId} />}
     </div>
   )
 }

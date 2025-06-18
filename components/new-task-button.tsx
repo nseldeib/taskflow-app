@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
 interface NewTaskButtonProps {
@@ -21,15 +20,7 @@ export function NewTaskButton({
   projectId,
   showText = true,
 }: NewTaskButtonProps) {
-  const pathname = usePathname()
-
-  // Determine the correct href based on context
-  const getHref = () => {
-    if (projectId) {
-      return `/dashboard/projects/${projectId}/tasks/new`
-    }
-    return "/dashboard/tasks/new"
-  }
+  const href = projectId ? `/dashboard/projects/${projectId}/tasks/new` : "/dashboard/tasks/new"
 
   // Floating action button variant
   if (variant === "floating") {
@@ -46,7 +37,7 @@ export function NewTaskButton({
           className,
         )}
       >
-        <Link href={getHref()}>
+        <Link href={href}>
           <Plus className="h-6 w-6" />
           <span className="sr-only">Add new task</span>
         </Link>
@@ -64,7 +55,7 @@ export function NewTaskButton({
         className,
       )}
     >
-      <Link href={getHref()}>
+      <Link href={href}>
         <Plus className="h-4 w-4" />
         {showText && <span className="ml-2">New Task</span>}
         <span className="sr-only">Create a new task</span>
