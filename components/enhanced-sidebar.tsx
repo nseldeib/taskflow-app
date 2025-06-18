@@ -138,9 +138,12 @@ export function EnhancedSidebar() {
       </div>
 
       <div
-        className={cn("fixed inset-0 top-16 z-50 bg-background lg:static lg:block", isMobileOpen ? "block" : "hidden")}
+        className={cn(
+          "fixed inset-0 top-16 z-50 bg-background/95 backdrop-blur-sm lg:static lg:block lg:bg-transparent lg:backdrop-blur-none",
+          isMobileOpen ? "block" : "hidden",
+        )}
       >
-        <div className="space-y-4 py-4 h-full border-r overflow-y-auto">
+        <div className="space-y-4 py-4 h-full border-r overflow-y-auto w-64 bg-background lg:w-auto">
           {/* Logo - Desktop only */}
           <div className="px-3 py-2 hidden lg:block">
             <div className="flex items-center gap-2 px-2">
@@ -161,7 +164,7 @@ export function EnhancedSidebar() {
                   onClick={() => setIsMobileOpen(false)}
                 >
                   <Link href={route.href}>
-                    <route.icon className="mr-2 h-5 w-5" />
+                    <route.icon className="mr-2 h-4 w-4" />
                     {route.label}
                   </Link>
                 </Button>
@@ -223,7 +226,9 @@ export function EnhancedSidebar() {
                     onClick={() => setIsMobileOpen(false)}
                   >
                     <Link href={`/dashboard/projects/${project.id}`}>
-                      <span className="mr-2 text-sm">{defaultProjectIcons[project.title] || "📁"}</span>
+                      <span className="mr-2 text-sm w-4 h-4 flex items-center justify-center">
+                        {defaultProjectIcons[project.title] || "📁"}
+                      </span>
                       <span className="truncate">{project.title}</span>
                     </Link>
                   </Button>
