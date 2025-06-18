@@ -2,6 +2,7 @@ import { ProjectCard } from "@/components/project-card"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { PageHeader } from "@/components/page-header"
 import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
 import { Plus, CheckCircle2, Clock, AlertCircle } from "lucide-react"
@@ -34,17 +35,17 @@ export default async function Dashboard() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground mt-1">Welcome back! Here's what's happening with your projects.</p>
-        </div>
-        <Button asChild>
+      <PageHeader
+        title="Dashboard"
+        description="Welcome back! Here's what's happening with your projects."
+        showSearch={false}
+      >
+        <Button asChild variant="outline">
           <Link href="/dashboard/projects/new">
             <Plus className="mr-2 h-4 w-4" /> New Project
           </Link>
         </Button>
-      </div>
+      </PageHeader>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
