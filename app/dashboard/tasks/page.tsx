@@ -1,12 +1,9 @@
-import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { PageHeader } from "@/components/page-header"
 import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
-import { Plus, Search } from "lucide-react"
 import { TaskList } from "@/components/task-list"
-import Link from "next/link"
 
 export default async function Tasks() {
   const cookieStore = cookies()
@@ -31,20 +28,12 @@ export default async function Tasks() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <h1 className="text-3xl font-bold tracking-tight">Tasks</h1>
-        <div className="flex items-center gap-2 w-full sm:w-auto">
-          <div className="relative w-full sm:w-auto">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input type="search" placeholder="Search tasks..." className="w-full sm:w-[200px] pl-8" />
-          </div>
-          <Button asChild>
-            <Link href="/dashboard/tasks/new">
-              <Plus className="mr-2 h-4 w-4" /> New Task
-            </Link>
-          </Button>
-        </div>
-      </div>
+      <PageHeader
+        title="Tasks"
+        description="Manage all your tasks across projects"
+        showSearch={true}
+        showFilters={true}
+      />
 
       <Tabs defaultValue="all" className="space-y-4">
         <TabsList>

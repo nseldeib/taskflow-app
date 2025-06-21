@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { PageHeader } from "@/components/page-header"
 import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
 import { notFound } from "next/navigation"
-import { CalendarDays, ListTodo, Plus, Settings } from "lucide-react"
+import { CalendarDays, ListTodo, Settings } from "lucide-react"
 import Link from "next/link"
 import { TaskList } from "@/components/task-list"
 
@@ -28,24 +29,20 @@ export default async function ProjectDetail({ params }: { params: { id: string }
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">{project.title}</h1>
-          {project.description && <p className="text-muted-foreground mt-1">{project.description}</p>}
-        </div>
-        <div className="flex items-center gap-2">
-          <Button asChild variant="outline">
-            <Link href={`/dashboard/projects/${params.id}/settings`}>
-              <Settings className="mr-2 h-4 w-4" /> Settings
-            </Link>
-          </Button>
-          <Button asChild>
-            <Link href={`/dashboard/projects/${params.id}/tasks/new`}>
-              <Plus className="mr-2 h-4 w-4" /> Add Task
-            </Link>
-          </Button>
-        </div>
-      </div>
+      <PageHeader
+        title={project.title}
+        description={project.description}
+        projectId={params.id}
+        showSearch={true}
+        showFilters={true}
+      >
+        <Button asChild variant="outline">
+          <Link href={`/dashboard/projects/${params.id}/settings`}>
+            <Settings className="h-4 w-4 mr-2" />
+            Settings
+          </Link>
+        </Button>
+      </PageHeader>
 
       <Tabs defaultValue="list" className="space-y-4">
         <TabsList>

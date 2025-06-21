@@ -35,17 +35,19 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-background">
       <EnhancedSidebar />
-      <div className="flex-1">
-        <header className="border-b bg-background">
-          <div className="flex h-16 items-center px-4 sm:px-6">
+      <div className="flex-1 flex flex-col min-w-0">
+        <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex h-16 items-center px-4 lg:px-6">
             <div className="ml-auto flex items-center space-x-4">
               <UserNav user={session.user} />
             </div>
           </div>
         </header>
-        <main className="p-4 sm:p-6 md:p-8">{children}</main>
+        <main className="flex-1 overflow-auto">
+          <div className="container mx-auto p-4 lg:p-6 xl:p-8 max-w-7xl">{children}</div>
+        </main>
       </div>
     </div>
   )
