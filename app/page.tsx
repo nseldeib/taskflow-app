@@ -280,13 +280,13 @@ export default function Home() {
             </div>
 
             <div className="flex gap-8 text-sm text-white/60">
-              <Link href="/privacy" className="hover:text-white transition-colors">
+              <Link href="/work-in-progress" className="hover:text-white transition-colors">
                 Privacy
               </Link>
-              <Link href="/terms" className="hover:text-white transition-colors">
+              <Link href="/work-in-progress" className="hover:text-white transition-colors">
                 Terms
               </Link>
-              <Link href="mailto:hello@taskflow.dev" className="hover:text-white transition-colors">
+              <Link href="/work-in-progress" className="hover:text-white transition-colors">
                 Contact
               </Link>
             </div>
