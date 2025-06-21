@@ -32,10 +32,9 @@ export default function Home() {
             </p>
             <div className="mt-10">
               <Button
-                size="lg"
                 asChild
                 variant="gradient"
-                className="text-lg px-12 py-6 h-16 text-white font-semibold shadow-2xl hover:shadow-purple-500/25 hover:scale-105 transition-all duration-300 rounded-xl"
+                className="text-xl px-12 py-6 h-16 text-white font-bold shadow-2xl hover:shadow-purple-500/30 hover:scale-105 transition-all duration-300 rounded-xl border-0 bg-gradient-to-r from-purple-500 via-purple-600 to-blue-600 hover:from-purple-600 hover:via-purple-700 hover:to-blue-700"
               >
                 <Link href="/signup">
                   Get Started <ArrowRight className="ml-3 h-6 w-6" />
