@@ -31,14 +31,12 @@ export default function Home() {
               management.
             </p>
             <div className="mt-10">
-              <Button
-                asChild
-                className="text-xl px-12 py-6 h-16 text-white font-bold shadow-2xl hover:shadow-purple-500/30 hover:scale-105 transition-all duration-300 rounded-xl bg-gradient-to-r from-purple-500 via-purple-600 to-blue-600 hover:from-purple-600 hover:via-purple-700 hover:to-blue-700 border-2 border-purple-400/50 hover:border-purple-300/70"
+              <Link
+                href="/signup"
+                className="inline-flex items-center justify-center gap-3 text-xl px-12 py-6 h-16 text-white font-bold shadow-2xl hover:shadow-purple-500/30 hover:scale-105 transition-all duration-300 rounded-xl bg-gradient-to-r from-purple-500 via-purple-600 to-blue-600 hover:from-purple-600 hover:via-purple-700 hover:to-blue-700 border-2 border-purple-400/50 hover:border-purple-300/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 active:scale-[0.98]"
               >
-                <Link href="/signup">
-                  Get Started <ArrowRight className="ml-3 h-6 w-6" />
-                </Link>
-              </Button>
+                Get Started <ArrowRight className="h-6 w-6" />
+              </Link>
             </div>
           </div>
 
