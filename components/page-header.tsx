@@ -39,20 +39,17 @@ export function PageHeader({
         </div>
 
         {/* Desktop Actions */}
-        <div className="hidden sm:flex items-center gap-2">
+        <div className="hidden sm:flex items-center gap-3">
           {children}
           {isProjectsPage ? (
-            <Button
-              asChild
-              className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
-            >
+            <Button asChild variant="gradient" size="lg">
               <Link href="/dashboard/projects/new">
-                <Plus className="h-4 w-4 mr-2" />
+                <Plus className="h-4 w-4" />
                 New Project
               </Link>
             </Button>
           ) : (
-            <NewTaskButton projectId={projectId} />
+            <NewTaskButton projectId={projectId} size="lg" />
           )}
         </div>
 
@@ -60,12 +57,12 @@ export function PageHeader({
         <div className="flex sm:hidden items-center gap-2 w-full">
           {showSearch && (
             <div className="relative flex-1">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input type="search" placeholder="Search..." className="pl-8" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 text-muted-foreground transform -translate-y-1/2" />
+              <Input type="search" placeholder="Search..." className="pl-10 rounded-lg" />
             </div>
           )}
           {isProjectsPage ? (
-            <Button asChild size="sm" className="shrink-0 bg-gradient-to-r from-purple-500 to-blue-500">
+            <Button asChild size="icon" variant="gradient" className="shrink-0">
               <Link href="/dashboard/projects/new">
                 <Plus className="h-4 w-4" />
                 <span className="sr-only">New Project</span>
@@ -79,11 +76,11 @@ export function PageHeader({
 
       {/* Desktop Search and Filters */}
       {(showSearch || showFilters) && (
-        <div className="hidden sm:flex items-center gap-2">
+        <div className="hidden sm:flex items-center gap-3">
           {showSearch && (
             <div className="relative w-full max-w-sm">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input type="search" placeholder="Search tasks..." className="pl-8" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 text-muted-foreground transform -translate-y-1/2" />
+              <Input type="search" placeholder="Search tasks..." className="pl-10 rounded-lg" />
             </div>
           )}
 
@@ -91,8 +88,8 @@ export function PageHeader({
             <div className="flex items-center gap-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm">
-                    <Filter className="h-4 w-4 mr-2" />
+                  <Button variant="outline" size="default">
+                    <Filter className="h-4 w-4" />
                     Filter
                   </Button>
                 </DropdownMenuTrigger>
@@ -106,8 +103,8 @@ export function PageHeader({
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm">
-                    <SortAsc className="h-4 w-4 mr-2" />
+                  <Button variant="outline" size="default">
+                    <SortAsc className="h-4 w-4" />
                     Sort
                   </Button>
                 </DropdownMenuTrigger>

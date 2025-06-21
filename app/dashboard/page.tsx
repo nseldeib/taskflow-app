@@ -40,9 +40,9 @@ export default async function Dashboard() {
         description="Welcome back! Here's what's happening with your projects."
         showSearch={false}
       >
-        <Button asChild variant="outline">
+        <Button asChild variant="outline" size="lg">
           <Link href="/dashboard/projects/new">
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-4 w-4" />
             New Project
           </Link>
         </Button>
@@ -110,12 +110,9 @@ export default async function Dashboard() {
                 <CardDescription>Create your first project to get started.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button
-                  asChild
-                  className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
-                >
+                <Button asChild variant="gradient" size="lg">
                   <Link href="/dashboard/projects/new">
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Plus className="h-4 w-4" />
                     Create Project
                   </Link>
                 </Button>

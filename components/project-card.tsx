@@ -37,7 +37,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </div>
       </CardContent>
       <CardFooter>
-        <Button asChild className="w-full">
+        <Button asChild className="w-full" variant="outline" size="lg">
           <Link href={`/dashboard/projects/${project.id}`}>View Project</Link>
         </Button>
       </CardFooter>

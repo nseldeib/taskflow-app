@@ -11,11 +11,11 @@ export default function Home() {
             <Sparkles className="h-6 w-6 text-purple-500" />
             <h1 className="text-2xl font-bold">TaskFlow</h1>
           </div>
-          <div className="flex gap-4">
-            <Button variant="ghost" asChild>
+          <div className="flex gap-3">
+            <Button variant="ghost" asChild size="lg">
               <Link href="/login">Login</Link>
             </Button>
-            <Button asChild>
+            <Button asChild variant="gradient" size="lg">
               <Link href="/signup">Sign Up</Link>
             </Button>
           </div>
@@ -31,13 +31,9 @@ export default function Home() {
               management.
             </p>
             <div className="mt-10">
-              <Button
-                size="lg"
-                asChild
-                className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
-              >
+              <Button size="lg" asChild variant="gradient" className="text-lg px-8 py-4 h-14">
                 <Link href="/signup">
-                  Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                  Get Started <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
             </div>

@@ -115,7 +115,7 @@ export default function Settings() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button type="submit" disabled={loading}>
+              <Button type="submit" disabled={loading} variant="gradient" size="lg">
                 {loading ? "Saving..." : "Save Changes"}
               </Button>
             </CardFooter>
@@ -150,7 +150,7 @@ export default function Settings() {
                 <h3 className="text-lg font-medium">Sign Out</h3>
                 <p className="text-sm text-muted-foreground">Sign out of your account.</p>
                 <div className="mt-4">
-                  <Button variant="destructive" onClick={handleSignOut}>
+                  <Button variant="destructive" onClick={handleSignOut} size="lg">
                     Sign Out
                   </Button>
                 </div>

@@ -27,8 +27,9 @@ export function DailyRecapProvider() {
       <div className="fixed bottom-4 right-4">
         <Button
           onClick={showRecapManually}
-          className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
-          size="sm"
+          variant="gradient"
+          size="lg"
+          className="shadow-xl hover:shadow-2xl transition-all duration-300"
         >
           📝 Daily Recap
         </Button>

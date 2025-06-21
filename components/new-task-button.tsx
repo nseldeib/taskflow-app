@@ -27,12 +27,13 @@ export function NewTaskButton({
     return (
       <Button
         asChild
-        size="icon"
+        size="icon-lg"
         className={cn(
-          "fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full shadow-lg",
+          "fixed bottom-6 right-6 z-50 rounded-full shadow-xl",
           "bg-gradient-to-r from-purple-500 to-blue-500",
           "hover:from-purple-600 hover:to-blue-600",
-          "hover:shadow-xl transition-all duration-200",
+          "hover:shadow-2xl transition-all duration-300",
+          "hover:scale-110 active:scale-105",
           "md:hidden", // Only show on mobile
           className,
         )}
@@ -46,15 +47,7 @@ export function NewTaskButton({
   }
 
   return (
-    <Button
-      asChild
-      variant={variant}
-      size={size}
-      className={cn(
-        variant === "default" && "bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600",
-        className,
-      )}
-    >
+    <Button asChild variant={variant === "default" ? "gradient" : variant} size={size} className={className}>
       <Link href={href}>
         <Plus className="h-4 w-4" />
         {showText && <span className="ml-2">New Task</span>}
