@@ -68,7 +68,7 @@ export default function Home() {
                 <Button
                   asChild
                   size="lg"
-                  className="text-lg px-10 py-6 h-14 bg-white text-slate-900 hover:bg-white/90 font-semibold shadow-2xl"
+                  className="text-lg px-10 py-6 h-14 bg-white text-slate-900 hover:bg-white/90 font-semibold shadow-2xl w-full sm:w-auto"
                 >
                   <Link href="/signup">
                     Get Started <ArrowRight className="h-5 w-5 ml-2" />
@@ -79,7 +79,7 @@ export default function Home() {
                   variant="outline"
                   size="lg"
                   asChild
-                  className="text-lg px-8 py-6 h-14 border-white/30 text-white hover:bg-white/10"
+                  className="text-lg px-8 py-6 h-14 border-white/30 text-white hover:bg-white/10 w-full sm:w-auto"
                 >
                   <Link href="/login">Already have an account?</Link>
                 </Button>
@@ -229,7 +229,7 @@ export default function Home() {
                 <Button
                   asChild
                   size="lg"
-                  className="text-xl px-12 py-8 h-16 bg-white text-slate-900 hover:bg-white/90 font-bold shadow-2xl"
+                  className="text-xl px-12 py-8 h-16 bg-white text-slate-900 hover:bg-white/90 font-bold shadow-2xl w-full sm:w-auto"
                 >
                   <Link href="/signup">
                     Get Started <ArrowRight className="h-6 w-6 ml-2" />
@@ -240,7 +240,7 @@ export default function Home() {
                   variant="outline"
                   size="lg"
                   asChild
-                  className="text-xl px-10 py-8 h-16 border-white/30 text-white hover:bg-white/10"
+                  className="text-xl px-10 py-8 h-16 border-white/30 text-white hover:bg-white/10 w-full sm:w-auto"
                 >
                   <Link href="/login">Sign In</Link>
                 </Button>
