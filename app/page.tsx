@@ -31,9 +31,14 @@ export default function Home() {
               management.
             </p>
             <div className="mt-10">
-              <Button size="lg" asChild variant="gradient" className="text-lg px-8 py-4 h-14">
+              <Button
+                size="lg"
+                asChild
+                variant="gradient"
+                className="text-lg px-12 py-6 h-16 text-white font-semibold shadow-2xl hover:shadow-purple-500/25 hover:scale-105 transition-all duration-300 rounded-xl"
+              >
                 <Link href="/signup">
-                  Get Started <ArrowRight className="ml-2 h-5 w-5" />
+                  Get Started <ArrowRight className="ml-3 h-6 w-6" />
                 </Link>
               </Button>
             </div>
