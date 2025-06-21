@@ -64,24 +64,16 @@ export default function Home() {
                 zero complexity.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+              <div className="flex justify-center mb-16">
                 <Button
                   asChild
                   size="lg"
-                  className="text-lg px-10 py-6 h-14 bg-white text-slate-900 hover:bg-white/90 font-semibold shadow-2xl w-full sm:w-auto"
+                  className="text-lg px-10 py-6 h-14 bg-white text-slate-900 hover:bg-white/90 font-semibold shadow-2xl"
                 >
-                  <Link href="/signup">
-                    Get Started <ArrowRight className="h-5 w-5 ml-2" />
+                  <Link href="/signup" className="flex items-center justify-center gap-2">
+                    Get Started
+                    <ArrowRight className="h-5 w-5" />
                   </Link>
-                </Button>
-
-                <Button
-                  variant="outline"
-                  size="lg"
-                  asChild
-                  className="text-lg px-8 py-6 h-14 border-white/30 text-white hover:bg-white/10 w-full sm:w-auto"
-                >
-                  <Link href="/login">Already have an account?</Link>
                 </Button>
               </div>
 
@@ -225,24 +217,16 @@ export default function Home() {
                 Create your account and start organizing your projects in under a minute.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <div className="flex justify-center">
                 <Button
                   asChild
                   size="lg"
-                  className="text-xl px-12 py-8 h-16 bg-white text-slate-900 hover:bg-white/90 font-bold shadow-2xl w-full sm:w-auto"
+                  className="text-xl px-12 py-8 h-16 bg-white text-slate-900 hover:bg-white/90 font-bold shadow-2xl"
                 >
-                  <Link href="/signup">
-                    Get Started <ArrowRight className="h-6 w-6 ml-2" />
+                  <Link href="/signup" className="flex items-center justify-center gap-2">
+                    Get Started
+                    <ArrowRight className="h-6 w-6" />
                   </Link>
-                </Button>
-
-                <Button
-                  variant="outline"
-                  size="lg"
-                  asChild
-                  className="text-xl px-10 py-8 h-16 border-white/30 text-white hover:bg-white/10 w-full sm:w-auto"
-                >
-                  <Link href="/login">Sign In</Link>
                 </Button>
               </div>
 
