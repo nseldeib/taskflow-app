@@ -71,7 +71,7 @@ export default function Home() {
                   className="text-lg px-10 py-6 h-14 bg-white text-slate-900 hover:bg-white/90 font-semibold shadow-2xl"
                 >
                   <Link href="/signup">
-                    Start organizing <ArrowRight className="h-5 w-5 ml-2" />
+                    Get Started <ArrowRight className="h-5 w-5 ml-2" />
                   </Link>
                 </Button>
 
@@ -232,7 +232,7 @@ export default function Home() {
                   className="text-xl px-12 py-8 h-16 bg-white text-slate-900 hover:bg-white/90 font-bold shadow-2xl"
                 >
                   <Link href="/signup">
-                    Get Started Free <ArrowRight className="h-6 w-6 ml-2" />
+                    Get Started <ArrowRight className="h-6 w-6 ml-2" />
                   </Link>
                 </Button>
 
