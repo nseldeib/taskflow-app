@@ -45,10 +45,12 @@ export function PageHeader({
             <Button asChild variant="gradient" size="lg">
               <Link href="/dashboard/projects/new">
                 <Plus className="h-4 w-4" />
+
                 New Project
               </Link>
             </Button>
           ) : (
+
             <NewTaskButton projectId={projectId} size="lg" />
           )}
         </div>
@@ -103,6 +105,7 @@ export function PageHeader({
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
+
                   <Button variant="outline" size="default">
                     <SortAsc className="h-4 w-4" />
                     Sort
