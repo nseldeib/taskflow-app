@@ -38,24 +38,22 @@ export function PageHeader({
           {description && <p className="text-muted-foreground">{description}</p>}
         </div>
 
-        {/* Desktop Actions (LOCAL version wins) */}
+        {/* Desktop Actions */}
         <div className="hidden sm:flex items-center gap-3">
           {children}
           {isProjectsPage ? (
             <Button asChild variant="gradient" size="lg">
               <Link href="/dashboard/projects/new">
-                <Plus className="h-4 w-4" />
-
+                <Plus className="h-4 w-4 mr-2" />
                 New Project
               </Link>
             </Button>
           ) : (
-
             <NewTaskButton projectId={projectId} size="lg" />
           )}
         </div>
 
-        {/* Mobile Actions (LOCAL version wins) */}
+        {/* Mobile Actions */}
         <div className="flex sm:hidden items-center gap-2 w-full">
           {showSearch && (
             <div className="relative flex-1">
@@ -76,7 +74,7 @@ export function PageHeader({
         </div>
       </div>
 
-      {/* Desktop Search and Filters (LOCAL version wins) */}
+      {/* Desktop Search and Filters */}
       {(showSearch || showFilters) && (
         <div className="hidden sm:flex items-center gap-3">
           {showSearch && (
@@ -91,7 +89,7 @@ export function PageHeader({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="default">
-                    <Filter className="h-4 w-4" />
+                    <Filter className="h-4 w-4 mr-2" />
                     Filter
                   </Button>
                 </DropdownMenuTrigger>
@@ -105,9 +103,8 @@ export function PageHeader({
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-
                   <Button variant="outline" size="default">
-                    <SortAsc className="h-4 w-4" />
+                    <SortAsc className="h-4 w-4 mr-2" />
                     Sort
                   </Button>
                 </DropdownMenuTrigger>
@@ -123,7 +120,7 @@ export function PageHeader({
         </div>
       )}
 
-      {/* Floating Action Button for Mobile (LOCAL version wins) */}
+      {/* Floating Action Button for Mobile */}
       {!isProjectsPage && <NewTaskButton variant="floating" projectId={projectId} />}
     </div>
   )
