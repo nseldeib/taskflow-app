@@ -33,7 +33,9 @@ export function DailyRecapModal({ open, onOpenChange }: DailyRecapModalProps) {
           </DialogHeader>
           <div className="text-center py-6">
             <p className="text-muted-foreground mb-4">Thanks for reflecting on your day. See you tomorrow!</p>
-            <Button onClick={() => onOpenChange(false)}>Close</Button>
+            <Button onClick={() => onOpenChange(false)} variant="gradient" size="lg">
+              Close
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -91,15 +93,11 @@ export function DailyRecapModal({ open, onOpenChange }: DailyRecapModalProps) {
           </Card>
 
           {/* Submit Button */}
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <div className="flex justify-end gap-3">
+            <Button variant="outline" size="lg" onClick={() => onOpenChange(false)}>
               Skip for Today
             </Button>
-            <Button
-              onClick={handleSubmit}
-              disabled={isSubmitting || !formData.mood}
-              className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
-            >
+            <Button onClick={handleSubmit} disabled={isSubmitting || !formData.mood} variant="gradient" size="lg">
               {isSubmitting ? "Saving..." : "Complete Recap"}
             </Button>
           </div>

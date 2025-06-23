@@ -111,11 +111,7 @@ function LoginForm() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button
-              type="submit"
-              className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
-              disabled={loading}
-            >
+            <Button type="submit" className="w-full" variant="gradient" size="lg" disabled={loading}>
               {loading ? "Logging in..." : "Log In"}
             </Button>
             <div className="text-center text-sm">

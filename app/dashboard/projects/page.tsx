@@ -44,12 +44,9 @@ export default async function Projects() {
             <CardDescription>Create your first project to get started.</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button
-              asChild
-              className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
-            >
+            <Button asChild variant="gradient" size="lg">
               <Link href="/dashboard/projects/new">
-                <Plus className="h-4 w-4 mr-2" />
+                <Plus className="h-4 w-4" />
                 Create Project
               </Link>
             </Button>

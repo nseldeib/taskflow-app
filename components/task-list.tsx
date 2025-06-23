@@ -163,7 +163,7 @@ export function TaskList({ tasks }: TaskListProps) {
             />
             <Button
               variant="ghost"
-              size="icon"
+              size="icon-sm"
               className="h-6 w-6 p-0"
               onClick={() => toggleTaskStar(task)}
               disabled={loading[task.id]}
@@ -207,7 +207,7 @@ export function TaskList({ tasks }: TaskListProps) {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Button variant="ghost" size="icon-sm" className="h-8 w-8">
                 <MoreHorizontal className="h-4 w-4" />
                 <span className="sr-only">Open menu</span>
               </Button>
