@@ -22,7 +22,7 @@ export function NewTaskButton({
 }: NewTaskButtonProps) {
   const href = projectId ? `/dashboard/projects/${projectId}/tasks/new` : "/dashboard/tasks/new"
 
-  // Floating action button variant
+  // Floating action button variant (LOCAL version wins)
   if (variant === "floating") {
     return (
       <Button
@@ -46,6 +46,7 @@ export function NewTaskButton({
     )
   }
 
+  // Regular button (LOCAL version wins - uses variant="gradient")
   return (
     <Button asChild variant={variant === "default" ? "gradient" : variant} size={size} className={className}>
       <Link href={href}>

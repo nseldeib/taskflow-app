@@ -38,7 +38,7 @@ export function PageHeader({
           {description && <p className="text-muted-foreground">{description}</p>}
         </div>
 
-        {/* Desktop Actions */}
+        {/* Desktop Actions (LOCAL version wins) */}
         <div className="hidden sm:flex items-center gap-3">
           {children}
           {isProjectsPage ? (
@@ -53,7 +53,7 @@ export function PageHeader({
           )}
         </div>
 
-        {/* Mobile Actions */}
+        {/* Mobile Actions (LOCAL version wins) */}
         <div className="flex sm:hidden items-center gap-2 w-full">
           {showSearch && (
             <div className="relative flex-1">
@@ -74,7 +74,7 @@ export function PageHeader({
         </div>
       </div>
 
-      {/* Desktop Search and Filters */}
+      {/* Desktop Search and Filters (LOCAL version wins) */}
       {(showSearch || showFilters) && (
         <div className="hidden sm:flex items-center gap-3">
           {showSearch && (
@@ -120,7 +120,7 @@ export function PageHeader({
         </div>
       )}
 
-      {/* Floating Action Button for Mobile */}
+      {/* Floating Action Button for Mobile (LOCAL version wins) */}
       {!isProjectsPage && <NewTaskButton variant="floating" projectId={projectId} />}
     </div>
   )

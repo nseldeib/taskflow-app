@@ -69,7 +69,7 @@
 }
 
 @layer utilities {
-  /* Enhanced animations */
+  /* Enhanced animations (LOCAL version wins) */
   @keyframes pulse-glow {
     0%,
     100% {
