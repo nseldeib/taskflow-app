@@ -2,11 +2,13 @@ import { ProjectCard } from "@/components/project-card"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { PageHeader } from "@/components/page-header"
 import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
 import { Plus, CheckCircle2, Clock, AlertCircle } from "lucide-react"
 import Link from "next/link"
 import { TaskList } from "@/components/task-list"
+import { DailyRecapProvider } from "@/components/daily-recap/daily-recap-provider"
 
 export default async function Dashboard() {
   const cookieStore = cookies()
@@ -32,17 +34,21 @@ export default async function Dashboard() {
     .limit(5)
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <Button asChild>
+    <div className="space-y-8">
+      <PageHeader
+        title="Dashboard"
+        description="Welcome back! Here's what's happening with your projects."
+        showSearch={false}
+      >
+        <Button asChild variant="outline" size="lg">
           <Link href="/dashboard/projects/new">
-            <Plus className="mr-2 h-4 w-4" /> New Project
+            <Plus className="h-4 w-4" />
+            New Project
           </Link>
         </Button>
-      </div>
+      </PageHeader>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
@@ -85,14 +91,14 @@ export default async function Dashboard() {
         </Card>
       </div>
 
-      <Tabs defaultValue="projects" className="space-y-4">
+      <Tabs defaultValue="projects" className="space-y-6">
         <TabsList>
           <TabsTrigger value="projects">Recent Projects</TabsTrigger>
           <TabsTrigger value="tasks">Recent Tasks</TabsTrigger>
         </TabsList>
-        <TabsContent value="projects" className="space-y-4">
+        <TabsContent value="projects" className="space-y-6">
           {projects && projects.length > 0 ? (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {projects.slice(0, 6).map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
@@ -104,19 +110,31 @@ export default async function Dashboard() {
                 <CardDescription>Create your first project to get started.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button asChild>
+                <Button asChild variant="gradient" size="lg">
                   <Link href="/dashboard/projects/new">
-                    <Plus className="mr-2 h-4 w-4" /> Create Project
+                    <Plus className="h-4 w-4" />
+                    Create Project
                   </Link>
                 </Button>
               </CardContent>
             </Card>
           )}
         </TabsContent>
-        <TabsContent value="tasks" className="space-y-4">
-          <TaskList tasks={tasks || []} />
+        <TabsContent value="tasks" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Tasks</CardTitle>
+              <CardDescription>Your latest tasks across all projects</CardDescription>
+            </CardHeader>
+            <CardContent className="p-0">
+              <TaskList tasks={tasks || []} />
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Daily Recap Integration */}
+      <DailyRecapProvider />
     </div>
   )
 }

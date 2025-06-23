@@ -1,5 +1,11 @@
--- Add starred field to todos table
+-- Comprehensive database setup for TaskFlow
+-- This script sets up all necessary columns and functions
+
+-- Add starred field to todos table if it doesn't exist
 ALTER TABLE todos ADD COLUMN IF NOT EXISTS starred BOOLEAN DEFAULT FALSE;
+
+-- Update existing todos to have starred = false if null
+UPDATE todos SET starred = false WHERE starred IS NULL;
 
 -- Create default projects function
 CREATE OR REPLACE FUNCTION create_default_projects(user_id UUID)
